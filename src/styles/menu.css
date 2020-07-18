@@ -1,0 +1,26 @@
+.menu {
+  list-style-type: none;
+}
+
+.menu li {
+  display: inline-block;
+  margin: 10px;
+  background-color: lightblue;
+  width: 200px;
+  height: 25px;
+  color: black;
+}
+
+.menu li a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.menu li a:hover {
+  color: white;
+}
+
+.menu li:hover {
+  background-color: darkblue;
+  color: white;
+}
