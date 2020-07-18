@@ -1,0 +1,29 @@
+.create-user-form {
+  width: 30%;
+  margin: 0 auto;
+  text-align: left;
+}
+.create-user-form label {
+  width: 150px;
+  float: left;
+  margin: 10px;
+}
+
+.create-user-form input {
+  float: left;
+  margin: 10px;
+}
+.create-user-form select {
+  float: left;
+  margin: 10px;
+}
+
+.create-user-form p {
+  color: red;
+  clear: both;
+  margin-left: 180px;
+}
+
+.create-user-form input[type="submit"] {
+  margin-left: 150px;
+}
