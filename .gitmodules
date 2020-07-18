@@ -1,0 +1,3 @@
+[submodule "src/common"]
+	path = src/common
+	url = https://github.com/karthikprince2k1/user-management-common.git
