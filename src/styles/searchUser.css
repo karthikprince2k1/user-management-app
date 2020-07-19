@@ -1,0 +1,17 @@
+.search-user-form {
+  max-width: 55%;
+  margin: 0 auto;
+  display: inline-block;
+}
+
+.search-user-form label {
+  padding: 10px;
+}
+
+.search-user-form div {
+  margin: 10px;
+}
+
+.search-user-form button {
+  margin: 10px;
+}

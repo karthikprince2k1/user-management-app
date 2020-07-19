@@ -9,6 +9,7 @@ import * as yup from "yup";
 
 import "../styles/createUser.css";
 import MultiSelectDropDown from "../common/src/components/MultiSelectDropDown/MultiSelectDropDown";
+import ContactsTable from "../components/ContactsTable";
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 const schema = yup.object().shape({
@@ -21,7 +22,7 @@ const schema = yup.object().shape({
   role: yup.string().required(),
 });
 
-export default function App() {
+export default function () {
   const { register, handleSubmit, errors, setValue } = useForm({
     resolver: yupResolver(schema),
   });
@@ -70,7 +71,6 @@ export default function App() {
         />
       </div>
       {errors.gender?.message && <p>{errors.gender?.message}</p>}
-
       <label>Role*</label>
       <MultiSelectDropDown
         options={["Read", "Write", "Admin", "Super"]}
@@ -78,6 +78,11 @@ export default function App() {
         setValue={setValue}
         register={register}
       />
+      {<p>{errors.role?.message}</p>}
+      <div>
+        <label>Contacts:</label>
+      </div>
+      <ContactsTable />
       <input type="submit" />
     </form>
   );
