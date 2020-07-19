@@ -8,6 +8,7 @@ import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
 
 import "../styles/createUser.css";
+import MultiSelectDropDown from "../common/src/components/MultiSelectDropDown/MultiSelectDropDown";
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 const schema = yup.object().shape({
@@ -17,10 +18,11 @@ const schema = yup.object().shape({
   email: yup.string().email().required(),
   dateOfBirth: yup.date().required(),
   gender: yup.string().required(),
+  role: yup.string().required(),
 });
 
 export default function App() {
-  const { register, handleSubmit, errors } = useForm({
+  const { register, handleSubmit, errors, setValue } = useForm({
     resolver: yupResolver(schema),
   });
   const onSubmit = (data) => console.log(data);
@@ -67,8 +69,15 @@ export default function App() {
           required
         />
       </div>
-
       {errors.gender?.message && <p>{errors.gender?.message}</p>}
+
+      <label>Role*</label>
+      <MultiSelectDropDown
+        options={["Read", "Write", "Admin", "Super"]}
+        name="role"
+        setValue={setValue}
+        register={register}
+      />
       <input type="submit" />
     </form>
   );
