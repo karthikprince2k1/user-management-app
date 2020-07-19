@@ -27,3 +27,11 @@
 .create-user-form input[type="submit"] {
   margin-left: 150px;
 }
+
+.create-user-form .radio-btn label[for] {
+  max-width: 50px;
+}
+.create-user-form .radio-btn input {
+  width: 15px;
+  margin: 13px 5px 10px 5px;
+}

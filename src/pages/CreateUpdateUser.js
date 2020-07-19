@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import Input from "../common/src/components/Input/Input";
 import DropDown from "../common/src/components/DropDown/DropDown";
 import CustomDatePicker from "../common/src/components/CustomDatePicker/CustomDatePicker";
-
+import RadioButton from "../common/src/components/RadioButton/RadioButton";
 import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
 
@@ -15,15 +15,8 @@ const schema = yup.object().shape({
   firstName: yup.string().required(),
   lastName: yup.string().required(),
   email: yup.string().email().required(),
-  dateOfBirth: yup.string().required(),
-  // gender: yup.string().required,
-  // role: yup.string().required,
-  // contacts: yup.array().of(
-  //   yup.object().shape({
-  //     type: yup.string().required,
-  //     contact: yup.string().matches(phoneRegExp, "Phone number is not valid"),
-  //   })
-  // ),
+  dateOfBirth: yup.date().required(),
+  gender: yup.string().required(),
 });
 
 export default function App() {
@@ -46,18 +39,36 @@ export default function App() {
         register={register}
         required
       />
-      <p>{errors.firstName?.message}</p>
+      {errors.firstName?.message && <p>{errors.firstName?.message}</p>}
       <Input label="Last Name*" name="lastName" register={register} required />
-      <p>{errors.lastName?.message}</p>
+      {errors.lastName?.message && <p>{errors.lastName?.message}</p>}
       <Input label="Email*" register={register} name="email" required />
-      <p>{errors.email?.message}</p>
+      {errors.email?.message && <p>{errors.email?.message}</p>}
       <CustomDatePicker
         label="Date of Birth*"
         name="dateOfBirth"
         register={register}
         required
       />
-      <p>{errors.dateOfBirth?.message}</p>
+      {errors.dateOfBirth?.message && <p>{errors.dateOfBirth?.message}</p>}
+      <div className="radio-btn">
+        <label>Gender*</label>
+        <RadioButton name="gender" value="Male" register={register} required />
+        <RadioButton
+          name="gender"
+          value="Female"
+          register={register}
+          required
+        />
+        <RadioButton
+          name="gender"
+          value="Others"
+          register={register}
+          required
+        />
+      </div>
+
+      {errors.gender?.message && <p>{errors.gender?.message}</p>}
       <input type="submit" />
     </form>
   );
