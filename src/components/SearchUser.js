@@ -7,7 +7,7 @@ import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
 import "../styles/searchUser.css";
 
-const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+const phoneRegExp = /^$|^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 const schema = yup.object().shape({
   firstName: yup.string(),
@@ -15,7 +15,7 @@ const schema = yup.object().shape({
   fromDob: yup.date(),
   toDob: yup.date(),
   contactType: yup.string(),
-  contact: yup.string().matches(phoneRegExp, "Contact is invalid"),
+  contact: yup.string().optional().matches(phoneRegExp, "Contact is invalid"),
 });
 
 export default function () {
@@ -23,6 +23,7 @@ export default function () {
     resolver: yupResolver(schema),
   });
   const onSubmit = (data) => console.log(data);
+  const resetForm = () => reset();
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="search-user-form">
       <div className="user-search">
@@ -51,7 +52,7 @@ export default function () {
       </div>
       <div>
         <input type="submit" value="Search" />
-        <button onClick={reset}>Reset</button>
+        <button onClick={resetForm}>Reset</button>
       </div>
     </form>
   );
