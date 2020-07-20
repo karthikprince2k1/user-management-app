@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Input from "../common/src/components/Input/Input";
 import DropDown from "../common/src/components/DropDown/DropDown";
@@ -10,6 +10,8 @@ import * as yup from "yup";
 import "../styles/createUser.css";
 import MultiSelectDropDown from "../common/src/components/MultiSelectDropDown/MultiSelectDropDown";
 import ContactsTable from "../components/ContactsTable";
+import { useParams } from "react-router-dom";
+import { getUserByUserId } from "../helpers/userHelpers";
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 const schema = yup.object().shape({
@@ -22,11 +24,43 @@ const schema = yup.object().shape({
   role: yup.string().required(),
 });
 
+const initialFormState = {
+  suffix: "Mr.",
+  firstName: "",
+  lastName: "",
+  email: "",
+  dateOfBirth: null,
+  gender: null,
+  role: null,
+};
+
 export default function () {
   const { register, handleSubmit, errors, setValue } = useForm({
     resolver: yupResolver(schema),
   });
   const onSubmit = (data) => console.log(data);
+
+  const { userId } = useParams();
+  const [initialValues, setInitialValues] = useState(initialFormState);
+
+  useEffect(() => {
+    if (userId > 0) {
+      getUserByUserId(userId).then((userData) => {
+        const user = userData.data;
+        const newFormState = { ...initialValues };
+        newFormState.suffix = user.suffix;
+        newFormState.firstName = user.firstname;
+        newFormState.lastName = user.lastname;
+        newFormState.email = user.email;
+        newFormState.dateOfBirth = user.dateofbirth;
+        newFormState.gender = user.gender;
+        newFormState.role = user.role;
+        console.log(userData.data, newFormState);
+        setInitialValues(newFormState);
+      });
+    }
+  }, []);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="create-user-form">
       <DropDown
@@ -34,6 +68,7 @@ export default function () {
         name="suffix"
         ref={register}
         options={["Mr.", "Mrs."]}
+        defaultValue={initialValues.suffix}
       />
       <p>{errors.suffix?.message}</p>
       <Input
@@ -41,33 +76,55 @@ export default function () {
         name="firstName"
         register={register}
         required
+        defaultValue={initialValues.firstName}
       />
       {errors.firstName?.message && <p>{errors.firstName?.message}</p>}
-      <Input label="Last Name*" name="lastName" register={register} required />
+      <Input
+        label="Last Name*"
+        name="lastName"
+        register={register}
+        required
+        defaultValue={initialValues.lastName}
+      />
       {errors.lastName?.message && <p>{errors.lastName?.message}</p>}
-      <Input label="Email*" register={register} name="email" required />
+      <Input
+        label="Email*"
+        register={register}
+        name="email"
+        required
+        defaultValue={initialValues.email}
+      />
       {errors.email?.message && <p>{errors.email?.message}</p>}
       <CustomDatePicker
         label="Date of Birth*"
         name="dateOfBirth"
         register={register}
         required
+        defaultValue={initialValues.dateOfBirth}
       />
       {errors.dateOfBirth?.message && <p>{errors.dateOfBirth?.message}</p>}
       <div className="radio-btn">
         <label>Gender*</label>
-        <RadioButton name="gender" value="Male" register={register} required />
+        <RadioButton
+          name="gender"
+          value="Male"
+          register={register}
+          required
+          defaultValue={initialValues.gender}
+        />
         <RadioButton
           name="gender"
           value="Female"
           register={register}
           required
+          defaultValue={initialValues.gender}
         />
         <RadioButton
           name="gender"
           value="Others"
           register={register}
           required
+          defaultValue={initialValues.gender}
         />
       </div>
       {errors.gender?.message && <p>{errors.gender?.message}</p>}
@@ -77,6 +134,7 @@ export default function () {
         name="role"
         setValue={setValue}
         register={register}
+        defaultValue={initialValues.role}
       />
       {<p>{errors.role?.message}</p>}
       <div>

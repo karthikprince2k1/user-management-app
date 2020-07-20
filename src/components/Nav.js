@@ -29,7 +29,7 @@ export default function (props) {
         </ul>
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route path="/createuser" component={CreateUpdateUser} />
+          <Route path="/createuser/:userId" component={CreateUpdateUser} />
           <Route path="/createcontact" component={CreateUpdateContact} />
           <Route path="/viewusers" component={ViewUsers} />
           <Route default component={NotFound} />

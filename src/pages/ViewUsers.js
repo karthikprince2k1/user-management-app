@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import UsersTable from "../components/UsersTable";
 import SearchUser from "../components/SearchUser";
+import { getUsers } from "../helpers/userHelpers";
 
 const getDate = (strDate) => {
   // converts date in YYYY-MM-DD format to Date
@@ -11,11 +12,6 @@ const getDate = (strDate) => {
   return new Date(year, month, day);
 };
 
-async function getUsers() {
-  const response = await fetch("http://localhost:8000/users");
-  const data = await response.json();
-  return data;
-}
 let fetchedUsers = null;
 export default function (props) {
   const [users, setUsers] = useState(null);
@@ -45,8 +41,14 @@ export default function (props) {
     }
     if (data.fromDob !== "" || data.toDob !== "") {
       filteredList = filteredList.filter((user) => {
-        let isDobAfterFromDate = data.fromDob !== "" ? getDate(user.dateofbirth) >= new Date(data.fromDob) : true;
-        let isDobBeforeToDate = data.toDob !== "" ? getDate(user.dateofbirth) <= new Date(data.toDob) : true;
+        let isDobAfterFromDate =
+          data.fromDob !== ""
+            ? getDate(user.dateofbirth) >= new Date(data.fromDob)
+            : true;
+        let isDobBeforeToDate =
+          data.toDob !== ""
+            ? getDate(user.dateofbirth) <= new Date(data.toDob)
+            : true;
         return isDobAfterFromDate && isDobBeforeToDate;
       });
     }
