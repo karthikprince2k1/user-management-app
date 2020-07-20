@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import UsersTable from "../components/UsersTable";
 import SearchUser from "../components/SearchUser";
 import { getUsers } from "../helpers/userHelpers";
+import { updateUsers } from "../actions/userActions";
+import { useDispatch, useSelector } from "react-redux";
 
 const getDate = (strDate) => {
   // converts date in YYYY-MM-DD format to Date
@@ -12,21 +14,15 @@ const getDate = (strDate) => {
   return new Date(year, month, day);
 };
 
-let fetchedUsers = null;
 export default function (props) {
-  const [users, setUsers] = useState(null);
-
+  const dispatch = useDispatch();
+  const fetchedUsers = useSelector((state) => state.users);
   useEffect(() => {
     getUsers().then((users) => {
       console.log(users.data);
-      setUsers(users.data);
-      fetchedUsers = users.data;
+      dispatch(updateUsers(users.data));
     });
   }, []);
-
-  const renderUsersGrid = (users) => {
-    return <UsersTable rowData={users} />;
-  };
   const handleSearch = (data) => {
     let filteredList = [...fetchedUsers];
     if (data.firstName !== "") {
@@ -53,18 +49,20 @@ export default function (props) {
       });
     }
 
-    setUsers(filteredList);
+    dispatch(updateUsers(filteredList));
   };
   const resetSearch = () => {
-    setUsers([...fetchedUsers]);
+    getUsers().then((users) => {
+      console.log(users.data);
+      dispatch(updateUsers(users.data));
+    });
   };
 
   return (
     <>
       <h1>View Users</h1>
       <SearchUser handleSearch={handleSearch} resetSearch={resetSearch} />
-
-      {users && renderUsersGrid(users)}
+      <UsersTable />
     </>
   );
 }

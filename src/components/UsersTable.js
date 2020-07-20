@@ -3,6 +3,9 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getUsers, deleteUserByUserId } from "../helpers/userHelpers";
+import { updateUsers } from "../actions/userActions";
 
 function EditRenderer(props) {
   const history = useHistory();
@@ -14,10 +17,27 @@ function EditRenderer(props) {
 }
 
 function DeleteRenderer(props) {
-  return <button>Delete</button>;
+  const dispatch = useDispatch();
+  const handleDelete = function (e) {
+    if (window.confirm("Do you want to delete user?")) {
+      deleteUserByUserId(props.value).then((data) => {
+        console.log("Successfully Deleted", data);
+
+        getUsers().then((users) => {
+          console.log(users.data);
+          dispatch(updateUsers(users.data));
+        });
+      });
+    } else {
+      // Do nothing!
+      console.log("Nothing deleted");
+    }
+  };
+  return <button onClick={handleDelete}>Delete</button>;
 }
 
 function UsersTable(props) {
+  //
   const columnDefs = [
     {
       headerName: "First Name",
@@ -56,8 +76,8 @@ function UsersTable(props) {
       cellRenderer: "deleteRenderer",
     },
   ];
-  const rowData = props.rowData;
-
+  const rowData = useSelector((state) => state.users);
+  debugger;
   const defaultColDef = {
     editable: true,
     resizable: true,
