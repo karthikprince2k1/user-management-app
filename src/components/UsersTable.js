@@ -2,10 +2,13 @@ import React from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
+import { useHistory } from "react-router-dom";
 
 function EditRenderer(props) {
+  const history = useHistory();
   const handleEdit = function (e) {
     console.log(e.target, props.value);
+    history.push("/createuser/" + props.value);
   };
   return <button onClick={handleEdit}>Edit</button>;
 }
