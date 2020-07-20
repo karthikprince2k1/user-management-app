@@ -107,21 +107,24 @@ export default function () {
         <label>Gender*</label>
         <RadioButton
           name="gender"
-          value="Male"
+          label="Male"
+          value="male"
           register={register}
           required
           defaultValue={initialValues.gender}
         />
         <RadioButton
           name="gender"
-          value="Female"
+          label="Female"
+          value="female"
           register={register}
           required
           defaultValue={initialValues.gender}
         />
         <RadioButton
           name="gender"
-          value="Others"
+          label="Others"
+          value="others"
           register={register}
           required
           defaultValue={initialValues.gender}
