@@ -46,7 +46,6 @@ function UsersTable(props) {
       editable: false,
       cellRenderer: "editRenderer",
     },
-    ,
     {
       headerName: "Delete",
       field: "user_id",

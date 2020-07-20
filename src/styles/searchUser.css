@@ -1,15 +1,29 @@
 .search-user-form {
   max-width: 55%;
   margin: 0 auto;
-  display: inline-block;
 }
 
 .search-user-form label {
   padding: 10px;
 }
 
-.search-user-form div {
+.search-user-form div.user-search {
   margin: 10px;
+  text-align: left;
+}
+
+.search-user-form div.dob-search {
+  margin: 10px;
+  text-align: left;
+}
+
+.search-user-form div.dob-search .from-date {
+  width: 30%;
+  display: inline-block;
+}
+.search-user-form div.dob-search .to-date {
+  width: 30%;
+  display: inline-block;
 }
 
 .search-user-form button {
