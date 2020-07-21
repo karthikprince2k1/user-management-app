@@ -2,39 +2,10 @@ import React from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
-import { useHistory } from "react-router-dom";
-import { connect, useDispatch } from "react-redux";
-import { getUsers, deleteUserByUserId } from "../helpers/userHelpers";
-import { updateUsers } from "../actions/userActions";
-
-function EditRenderer(props) {
-  const history = useHistory();
-  const handleEdit = function (e) {
-    console.log(e.target, props.value);
-    history.push("/createuser/" + props.value);
-  };
-  return <button onClick={handleEdit}>Edit</button>;
-}
-
-function DeleteRenderer(props) {
-  const dispatch = useDispatch();
-  const handleDelete = function (e) {
-    if (window.confirm("Do you want to delete user?")) {
-      deleteUserByUserId(props.value).then((data) => {
-        console.log("Successfully Deleted", data);
-
-        getUsers().then((users) => {
-          console.log(users.data);
-          dispatch(updateUsers(users.data));
-        });
-      });
-    } else {
-      // Do nothing!
-      console.log("Nothing deleted");
-    }
-  };
-  return <button onClick={handleDelete}>Delete</button>;
-}
+import { connect } from "react-redux";
+import { DeleteRenderer } from "./DeleteRenderer";
+import { EditRenderer } from "./EditRenderer";
+import { Link } from "react-router-dom";
 
 const defaultColDef = {
   editable: true,
@@ -122,8 +93,12 @@ class UsersTable extends React.Component {
           margin: "0 auto",
         }}
       >
-        <div>
+        <div className="util-btns">
+          <Link to="/createuser">
+            <button>Create User</button>
+          </Link>
           <button onClick={this.handleExcelExport}>CSV Export</button>
+
           {/* <button onClick={this.handleColumnSelection}>Select Columns</button>
           <div>
             {this.state.columnDefs.map(c => )}
