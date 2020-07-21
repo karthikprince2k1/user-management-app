@@ -11,7 +11,8 @@ export function DeleteContact(props) {
   const { userId } = useParams();
   const handleDelete = function (e) {
     if (window.confirm("Do you want to delete contact?")) {
-      deleteContactByContactId(props.value).then((data) => {
+      debugger;
+      deleteContactByContactId(userId, props.value).then((data) => {
         console.log("Successfully Deleted", data);
 
         getContactsByUserId(userId).then((res) => {

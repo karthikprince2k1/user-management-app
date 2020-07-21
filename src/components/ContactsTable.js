@@ -42,7 +42,7 @@ class ContactsTable extends React.Component {
         ,
         {
           headerName: "Delete",
-          field: "row",
+          field: "contact_id",
           editable: false,
           cellRenderer: "deleteRenderer",
         },

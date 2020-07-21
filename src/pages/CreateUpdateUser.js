@@ -50,7 +50,14 @@ const getFormattedDate = (dob) => {
   const val = year + "-" + month + "-" + day;
   return val;
 };
-
+const getRole = (role) => {
+  debugger;
+  let result = role
+    .split(",")
+    .map((r) => r.toLowerCase())
+    .join(";");
+  return result;
+};
 export default function () {
   const { register, handleSubmit, errors, setValue, reset } = useForm({
     resolver: yupResolver(schema),
@@ -64,10 +71,7 @@ export default function () {
     reqObj.dateofbirth = getFormattedDate(data.dateOfBirth);
     reqObj.email = data.email;
     reqObj.gender = data.gender;
-    reqObj.role = data.role
-      .split(",")
-      .map((r) => r.toLowerCase())
-      .join(";");
+    reqObj.role = getRole(data.role);
     reqObj.suffix = data.suffix;
     let pushUser = createUser;
     if (userId > 0) {
@@ -111,6 +115,8 @@ export default function () {
         }
         dispatch(updateContacts(res.data));
       });
+    } else {
+      dispatch(updateContacts([]));
     }
   }, []);
   const handleCancel = (e) => {
