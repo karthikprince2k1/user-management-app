@@ -11,7 +11,9 @@ import "../styles/createUser.css";
 import MultiSelectDropDown from "../common/src/components/MultiSelectDropDown/MultiSelectDropDown";
 import ContactsTable from "../components/ContactsTable";
 import { useParams, Link } from "react-router-dom";
-import { getUserByUserId } from "../helpers/userHelpers";
+import { getUserByUserId, getContactsByUserId } from "../helpers/userHelpers";
+import { useDispatch } from "react-redux";
+import { updateContacts } from "../actions/contactActions";
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 const schema = yup.object().shape({
@@ -42,7 +44,7 @@ export default function () {
 
   const { userId } = useParams();
   const [initialValues, setInitialValues] = useState(initialFormState);
-
+  const dispatch = useDispatch();
   useEffect(() => {
     if (userId > 0) {
       getUserByUserId(userId).then((userData) => {
@@ -57,6 +59,13 @@ export default function () {
         newFormState.role = user.role;
         console.log(userData.data, newFormState);
         setInitialValues(newFormState);
+      });
+      getContactsByUserId(userId).then((res) => {
+        if (res.error) {
+          console.error(res.error);
+          return;
+        }
+        dispatch(updateContacts(res.data));
       });
     }
   }, []);
