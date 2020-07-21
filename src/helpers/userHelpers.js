@@ -21,6 +21,35 @@ export async function deleteUserByUserId(userId) {
   return data;
 }
 
+export async function createUser(userObj) {
+  const response = await fetch("http://localhost:8000/users/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userObj),
+  });
+  const data = await response.json();
+  console.log("Post return", data);
+  return data;
+}
+
+export async function replaceUser(userObj) {
+  const response = await fetch(
+    "http://localhost:8000/users/" + userObj.userId,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userObj),
+    }
+  );
+  const data = await response.json();
+  console.log("Post return", data);
+  return data;
+}
+
 export async function getContactsByUserId(userId) {
   const response = await fetch(
     "http://localhost:8000/users/" + userId + "/contacts"

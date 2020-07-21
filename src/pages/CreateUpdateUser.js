@@ -10,8 +10,13 @@ import * as yup from "yup";
 import "../styles/createUser.css";
 import MultiSelectDropDown from "../common/src/components/MultiSelectDropDown/MultiSelectDropDown";
 import ContactsTable from "../components/ContactsTable";
-import { useParams, Link } from "react-router-dom";
-import { getUserByUserId, getContactsByUserId } from "../helpers/userHelpers";
+import { useParams, Link, useHistory } from "react-router-dom";
+import {
+  getUserByUserId,
+  getContactsByUserId,
+  createUser,
+  replaceUser,
+} from "../helpers/userHelpers";
 import { useDispatch } from "react-redux";
 import { updateContacts } from "../actions/contactActions";
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -36,13 +41,52 @@ const initialFormState = {
   role: null,
 };
 
+const getFormattedDate = (dob) => {
+  const year = dob.getFullYear();
+  const mm = parseInt(dob.getMonth(), 10) + 1;
+  const month = mm <= 9 ? "0" + mm : mm;
+  const dd = parseInt(dob.getDate(), 10);
+  const day = dd < 10 ? "0" + dd : dd;
+  const val = year + "-" + month + "-" + day;
+  return val;
+};
+
 export default function () {
   const { register, handleSubmit, errors, setValue, reset } = useForm({
     resolver: yupResolver(schema),
   });
-  const onSubmit = (data) => console.log(data);
-
+  const history = useHistory();
   const { userId } = useParams();
+  const onSubmit = (data) => {
+    const reqObj = {};
+    reqObj.firstname = data.firstName;
+    reqObj.lastname = data.lastName;
+    reqObj.dateofbirth = getFormattedDate(data.dateOfBirth);
+    reqObj.email = data.email;
+    reqObj.gender = data.gender;
+    reqObj.role = data.role
+      .split(",")
+      .map((r) => r.toLowerCase())
+      .join(";");
+    reqObj.suffix = data.suffix;
+    let pushUser = createUser;
+    if (userId > 0) {
+      reqObj.userId = userId;
+      pushUser = replaceUser;
+    }
+
+    pushUser(reqObj)
+      .then((res) => {
+        if (res.error) {
+          console.error(res.error);
+          return;
+        }
+        console.log(res);
+        history.push("/viewusers");
+      })
+      .catch((err) => console.log(err));
+  };
+
   const [initialValues, setInitialValues] = useState(initialFormState);
   const dispatch = useDispatch();
   useEffect(() => {
