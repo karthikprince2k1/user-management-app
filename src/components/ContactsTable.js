@@ -71,11 +71,8 @@ function ContactsTable(props) {
     <div
       className="ag-theme-alpine"
       style={{
-        height: "250px",
-        width: "900px",
-        position: "relative",
-        top: "100px",
-        left: "-160px",
+        height: "180px",
+        width: "600px",
       }}
     >
       <AgGridReact

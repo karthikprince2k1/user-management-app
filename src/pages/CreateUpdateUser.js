@@ -35,7 +35,7 @@ const initialFormState = {
 };
 
 export default function () {
-  const { register, handleSubmit, errors, setValue } = useForm({
+  const { register, handleSubmit, errors, setValue, reset } = useForm({
     resolver: yupResolver(schema),
   });
   const onSubmit = (data) => console.log(data);
@@ -60,7 +60,9 @@ export default function () {
       });
     }
   }, []);
-
+  const handleCancel = (e) => {
+    reset();
+  };
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="create-user-form">
       <DropDown
@@ -142,9 +144,14 @@ export default function () {
       {<p>{errors.role?.message}</p>}
       <div>
         <label>Contacts:</label>
+        <span></span>
       </div>
-      <ContactsTable />
+      <div className="createuser-contacts-table">
+        <ContactsTable />
+      </div>
+
       <input type="submit" />
+      <input type="button" onClick={handleCancel} value="Cancel" />
     </form>
   );
 }
