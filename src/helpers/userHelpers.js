@@ -31,7 +31,7 @@ export async function getContactsByUserId(userId) {
 
 export async function getContactByUserIdAndContactId(userId, contactId) {
   const response = await fetch(
-    "http://localhost:8000/users/" + userId + "/contacts" + contactId
+    "http://localhost:8000/users/" + userId + "/contacts/" + contactId
   );
   const data = await response.json();
   return data;
@@ -51,5 +51,19 @@ export async function setContactForUser(userId, contactObj) {
   );
   const data = await response.json();
   console.log("Post return", data);
+  return data;
+}
+
+export async function deleteContactByContactId(userId, contactId) {
+  const response = await fetch(
+    "http://localhost:8000/users/" + userId + "/contacts/" + contactId,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const data = await response.json();
   return data;
 }

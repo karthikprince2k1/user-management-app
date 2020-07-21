@@ -50,13 +50,13 @@ export default function () {
   };
   useEffect(() => {
     if (userId > 0 && contactId > 0) {
-      getContactByUserIdAndContactId(userId, contactId).then((contactData) => {
-        const contact = contactData.data;
+      getContactByUserIdAndContactId(userId, contactId).then((res) => {
+        const contactData = res.data[0];
         const newFormState = { ...initialValues };
-        newFormState.type = contact.type;
-        newFormState.contact = contact.contact;
+        newFormState.type = contactData.type;
+        newFormState.contact = contactData.contact;
 
-        console.log(contactData.data, newFormState);
+        console.log(res.data, newFormState);
         setInitialValues(newFormState);
       });
       // getContactsByUserId(userId).then((data) => {

@@ -3,8 +3,8 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 import { connect } from "react-redux";
-import { DeleteRenderer } from "./DeleteRenderer";
-import { EditRenderer } from "./EditRenderer";
+import { DeleteContact } from "./DeleteContact";
+import { EditContact } from "./EditContact";
 import { Link } from "react-router-dom";
 
 const defaultColDef = {
@@ -21,8 +21,8 @@ class ContactsTable extends React.Component {
       columnApi: {},
       defaultColDef: defaultColDef,
       frameworkComponents: {
-        editRenderer: EditRenderer,
-        deleteRenderer: DeleteRenderer,
+        editRenderer: EditContact,
+        deleteRenderer: DeleteContact,
       },
       columnDefs: [
         {
