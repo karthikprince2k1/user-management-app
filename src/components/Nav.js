@@ -15,16 +15,10 @@ export default function (props) {
       <div>
         <ul className="menu">
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/viewusers">View Users</Link>
           </li>
           <li>
             <Link to="/createuser">Create User</Link>
-          </li>
-          <li>
-            <Link to="/createcontact">Create Contact</Link>
-          </li>
-          <li>
-            <Link to="/viewusers">View Users</Link>
           </li>
         </ul>
         <Switch>
