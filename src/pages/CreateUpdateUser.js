@@ -10,7 +10,7 @@ import * as yup from "yup";
 import "../styles/createUser.css";
 import MultiSelectDropDown from "../common/src/components/MultiSelectDropDown/MultiSelectDropDown";
 import ContactsTable from "../components/ContactsTable";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { getUserByUserId } from "../helpers/userHelpers";
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
@@ -64,94 +64,99 @@ export default function () {
     reset();
   };
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="create-user-form">
-      <DropDown
-        label="Suffix*"
-        name="suffix"
-        ref={register}
-        options={["Mr.", "Mrs."]}
-        defaultValue={initialValues.suffix}
-      />
-      <p>{errors.suffix?.message}</p>
-      <Input
-        label="First Name*"
-        name="firstName"
-        register={register}
-        required
-        defaultValue={initialValues.firstName}
-      />
-      {errors.firstName?.message && <p>{errors.firstName?.message}</p>}
-      <Input
-        label="Last Name*"
-        name="lastName"
-        register={register}
-        required
-        defaultValue={initialValues.lastName}
-      />
-      {errors.lastName?.message && <p>{errors.lastName?.message}</p>}
-      <Input
-        label="Email*"
-        register={register}
-        name="email"
-        required
-        defaultValue={initialValues.email}
-      />
-      {errors.email?.message && <p>{errors.email?.message}</p>}
-      <CustomDatePicker
-        label="Date of Birth*"
-        name="dateOfBirth"
-        register={register}
-        required
-        defaultValue={initialValues.dateOfBirth}
-      />
-      {errors.dateOfBirth?.message && <p>{errors.dateOfBirth?.message}</p>}
-      <div className="radio-btn">
-        <label>Gender*</label>
-        <RadioButton
-          name="gender"
-          label="Male"
-          value="male"
+    <>
+      <h1>Create/Update User</h1>
+      <form onSubmit={handleSubmit(onSubmit)} className="create-user-form">
+        <DropDown
+          label="Suffix*"
+          name="suffix"
+          ref={register}
+          options={["Mr.", "Mrs."]}
+          defaultValue={initialValues.suffix}
+        />
+        <p>{errors.suffix?.message}</p>
+        <Input
+          label="First Name*"
+          name="firstName"
           register={register}
           required
-          defaultValue={initialValues.gender}
+          defaultValue={initialValues.firstName}
         />
-        <RadioButton
-          name="gender"
-          label="Female"
-          value="female"
+        {errors.firstName?.message && <p>{errors.firstName?.message}</p>}
+        <Input
+          label="Last Name*"
+          name="lastName"
           register={register}
           required
-          defaultValue={initialValues.gender}
+          defaultValue={initialValues.lastName}
         />
-        <RadioButton
-          name="gender"
-          label="Others"
-          value="others"
+        {errors.lastName?.message && <p>{errors.lastName?.message}</p>}
+        <Input
+          label="Email*"
+          register={register}
+          name="email"
+          required
+          defaultValue={initialValues.email}
+        />
+        {errors.email?.message && <p>{errors.email?.message}</p>}
+        <CustomDatePicker
+          label="Date of Birth*"
+          name="dateOfBirth"
           register={register}
           required
-          defaultValue={initialValues.gender}
+          defaultValue={initialValues.dateOfBirth}
         />
-      </div>
-      {errors.gender?.message && <p>{errors.gender?.message}</p>}
-      <label>Role*</label>
-      <MultiSelectDropDown
-        options={["Read", "Write", "Admin", "Super"]}
-        name="role"
-        setValue={setValue}
-        register={register}
-        defaultValue={initialValues.role}
-      />
-      {<p>{errors.role?.message}</p>}
-      <div>
-        <label>Contacts:</label>
-        <span></span>
-      </div>
-      <div className="createuser-contacts-table">
-        <ContactsTable />
-      </div>
+        {errors.dateOfBirth?.message && <p>{errors.dateOfBirth?.message}</p>}
+        <div className="radio-btn">
+          <label>Gender*</label>
+          <RadioButton
+            name="gender"
+            label="Male"
+            value="male"
+            register={register}
+            required
+            defaultValue={initialValues.gender}
+          />
+          <RadioButton
+            name="gender"
+            label="Female"
+            value="female"
+            register={register}
+            required
+            defaultValue={initialValues.gender}
+          />
+          <RadioButton
+            name="gender"
+            label="Others"
+            value="others"
+            register={register}
+            required
+            defaultValue={initialValues.gender}
+          />
+        </div>
+        {errors.gender?.message && <p>{errors.gender?.message}</p>}
+        <label>Role*</label>
+        <MultiSelectDropDown
+          options={["Read", "Write", "Admin", "Super"]}
+          name="role"
+          setValue={setValue}
+          register={register}
+          defaultValue={initialValues.role}
+        />
+        {<p>{errors.role?.message}</p>}
+        <div>
+          <label>Contacts:</label>
+          <span></span>
+        </div>
+        <div className="createuser-contacts-table">
+          <ContactsTable userId={userId} />
+        </div>
 
-      <input type="submit" />
-      <input type="button" onClick={handleCancel} value="Cancel" />
-    </form>
+        <div className="row-submit">
+          <input type="submit" />
+          <input type="button" onClick={handleCancel} value="Cancel" />
+        </div>
+      </form>
+    </>
   );
 }

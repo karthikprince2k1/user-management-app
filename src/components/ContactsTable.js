@@ -2,70 +2,104 @@ import React from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
+import { connect } from "react-redux";
+import { DeleteRenderer } from "./DeleteRenderer";
+import { EditRenderer } from "./EditRenderer";
+import { Link } from "react-router-dom";
 
-function EditRenderer(props) {
-  const handleEdit = function (e) {
-    console.log(e.target, props.value);
-  };
-  return <button onClick={handleEdit}>Edit</button>;
-}
+const defaultColDef = {
+  editable: true,
+  resizable: true,
+  sortable: true,
+};
 
-function DeleteRenderer(props) {
-  return <button>Delete</button>;
-}
+class ContactsTable extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      api: {},
+      columnApi: {},
+      defaultColDef: defaultColDef,
+      frameworkComponents: {
+        editRenderer: EditRenderer,
+        deleteRenderer: DeleteRenderer,
+      },
+      columnDefs: [
+        {
+          headerName: "Type",
+          field: "type",
+        },
+        {
+          headerName: "Contact",
+          field: "contact",
+        },
+        {
+          headerName: "Edit",
+          field: "contact_id",
+          editable: false,
+          cellRenderer: "editRenderer",
+        },
+        ,
+        {
+          headerName: "Delete",
+          field: "row",
+          editable: false,
+          cellRenderer: "deleteRenderer",
+        },
+      ],
+    };
+  }
 
-function ContactsTable(props) {
-  const columnDefs = [
-    {
-      headerName: "Type",
-      field: "type",
-    },
-    {
-      headerName: "Contact",
-      field: "contact",
-    },
-    {
-      headerName: "Edit",
-      field: "contact_id",
-      editable: false,
-      cellRenderer: "editRenderer",
-    },
-    ,
-    {
-      headerName: "Delete",
-      field: "row",
-      editable: false,
-      cellRenderer: "deleteRenderer",
-    },
-  ];
-  const rowData = [
-    { type: "Phone", contact: "123-476-1789", contact_id: 1 },
-    { type: "Mobile", contact: "345-476-1789", contact_id: 2 },
-  ];
-
-  const defaultColumnDefs = {
-    editable: true,
-    resizable: true,
-    sortable: true,
-  };
-  const onGridReady = (params) => {
-    console.log("Grid Params", params);
-    gridOptions.api = params.api;
-    gridOptions.columnApi = params.columnApi;
+  onGridReady = (params) => {
+    this.setState({
+      api: params.api,
+      columnApi: params.columnApi,
+    });
     params.api.sizeColumnsToFit();
   };
-  const gridOptions = {
-    api: {},
-    columnApi: {},
-    columnDefs: columnDefs,
-    rowData: rowData,
-    defaultColDef: defaultColumnDefs,
-    onGridReady: onGridReady,
-    frameworkComponents: {
-      editRenderer: EditRenderer,
-      deleteRenderer: DeleteRenderer,
-    },
+
+  render() {
+    return (
+      <div
+        className="ag-theme-alpine"
+        style={{
+          height: "180px",
+          width: "600px",
+        }}
+      >
+        <div className="util-btns">
+          <Link to={"/createcontact/" + this.props.userId}>
+            <button>Add Contact</button>
+          </Link>
+          {/* <button onClick={this.handleColumnSelection}>Select Columns</button>
+          <div>
+            {this.state.columnDefs.map(c => )}
+          </div> */}
+        </div>
+
+        <AgGridReact
+          columnDefs={this.state.columnDefs}
+          rowData={this.props.contacts}
+          defaultColDef={this.state.defaultColDef}
+          onGridReady={this.onGridReady}
+          frameworkComponents={this.state.frameworkComponents}
+        ></AgGridReact>
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = (state) => {
+  return {
+    contacts: state.contacts,
   };
+};
+
+export default connect(mapStateToProps)(ContactsTable);
+
+/*
+
+function ContactsTable(props) {
 
   return (
     <div
@@ -75,6 +109,7 @@ function ContactsTable(props) {
         width: "600px",
       }}
     >
+
       <AgGridReact
         columnDefs={gridOptions.columnDefs}
         rowData={gridOptions.rowData}
@@ -86,4 +121,4 @@ function ContactsTable(props) {
   );
 }
 
-export default ContactsTable;
+export default ContactsTable;*/

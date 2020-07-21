@@ -30,7 +30,10 @@ export default function (props) {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/createuser/:userId?" component={CreateUpdateUser} />
-          <Route path="/createcontact" component={CreateUpdateContact} />
+          <Route
+            path="/createcontact/:userId?"
+            component={CreateUpdateContact}
+          />
           <Route path="/viewusers" component={ViewUsers} />
           <Route default component={NotFound} />
         </Switch>
