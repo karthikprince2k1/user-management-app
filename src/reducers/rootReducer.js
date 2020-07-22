@@ -9,3 +9,9 @@ const rootReducer = combineReducers({
 });
 
 export default rootReducer;
+
+const initialState = {
+  contacts: [],
+  users: [],
+};
+export { rootReducer, initialState };
