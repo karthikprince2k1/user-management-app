@@ -69,7 +69,7 @@ class ContactsTable extends React.Component {
       >
         <div className="util-btns">
           <Link to={"/createcontact/" + this.props.userId}>
-            <button>Add Contact</button>
+            <button disabled={!this.props.userId}>Add Contact</button>
           </Link>
           {/* <button onClick={this.handleColumnSelection}>Select Columns</button>
           <div>
