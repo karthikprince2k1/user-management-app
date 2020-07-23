@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { DeleteRenderer } from "./DeleteRenderer";
 import { EditRenderer } from "./EditRenderer";
 import { Link } from "react-router-dom";
+import { CheckBoxes } from "../common/src/components/CheckBoxes/CheckBoxes";
 
 const defaultColDef = {
   editable: true,
@@ -62,6 +63,7 @@ class UsersTable extends React.Component {
           cellRenderer: "deleteRenderer",
         },
       ],
+      selCols: false,
     };
   }
 
@@ -78,10 +80,41 @@ class UsersTable extends React.Component {
       columnApi: params.columnApi,
     });
     params.api.sizeColumnsToFit();
+    const userPrefs = window.localStorage.getItem("user-prefs");
+    if (userPrefs) {
+      const data = JSON.parse(userPrefs);
+      Object.keys(data).forEach((key) => {
+        params.columnApi.setColumnVisible(key, data[key]);
+      });
+    }
   };
 
-  // handleColumnSelection = () => {};
+  handleColumnSelection = (e) => {
+    this.setState({
+      selCols: !this.state.selCols,
+    });
+  };
 
+  handleCheckBoxes = (data) => {
+    const newColDefs = [...this.state.columnDefs];
+    Object.keys(data).forEach((key) => {
+      this.state.columnApi.setColumnVisible(key, data[key]);
+    });
+    window.localStorage.setItem("user-prefs", JSON.stringify(data));
+  };
+
+  getCheckBoxes = () => {
+    const checkboxes = [];
+    for (let i = 0; i < this.state.columnDefs.length - 2; i++) {
+      const obj = this.state.columnDefs[i];
+      checkboxes.push({
+        name: obj.field,
+        key: obj.field,
+        label: obj.headerName,
+      });
+    }
+    return checkboxes;
+  };
   render() {
     return (
       <div
@@ -99,10 +132,18 @@ class UsersTable extends React.Component {
           </Link>
           <button onClick={this.handleExcelExport}>CSV Export</button>
 
-          {/* <button onClick={this.handleColumnSelection}>Select Columns</button>
-          <div>
-            {this.state.columnDefs.map(c => )}
-          </div> */}
+          <button onClick={this.handleColumnSelection}>
+            {this.state.selCols ? "Done" : "Select Columns"}
+          </button>
+          {this.state.selCols && (
+            <div>
+              <CheckBoxes
+                checkboxes={this.getCheckBoxes()}
+                defaultChecked={true}
+                handleCheckBoxes={this.handleCheckBoxes}
+              />
+            </div>
+          )}
         </div>
 
         <AgGridReact
