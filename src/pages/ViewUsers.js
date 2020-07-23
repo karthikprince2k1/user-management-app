@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import UsersTable from "../components/UsersTable";
 import SearchUser from "../components/SearchUser";
-import { getUsers } from "../helpers/userHelpers";
+import { getUsers, getUserByContact } from "../helpers/userHelpers";
 import { updateUsers } from "../actions/userActions";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -25,6 +25,12 @@ export default function (props) {
   }, []);
   const handleSearch = (data) => {
     let filteredList = [...fetchedUsers];
+    if (data.contact !== "") {
+      getUserByContact(data.contactType, data.contact).then((res) => {
+        dispatch(updateUsers(res.data));
+      });
+    }
+
     if (data.firstName !== "") {
       filteredList = filteredList.filter(
         (user) => user.firstname.indexOf(data.firstName) > -1

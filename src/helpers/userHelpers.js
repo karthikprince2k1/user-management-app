@@ -96,3 +96,11 @@ export async function deleteContactByContactId(userId, contactId) {
   const data = await response.json();
   return data;
 }
+
+export async function getUserByContact(type, contact) {
+  const response = await fetch(
+    "http://localhost:8000/contacts/" + type + "/" + contact
+  );
+  const data = await response.json();
+  return data;
+}
