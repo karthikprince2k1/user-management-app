@@ -107,11 +107,23 @@ class UsersTable extends React.Component {
     const checkboxes = [];
     for (let i = 0; i < this.state.columnDefs.length - 2; i++) {
       const obj = this.state.columnDefs[i];
-      checkboxes.push({
-        name: obj.field,
-        key: obj.field,
-        label: obj.headerName,
-      });
+      const userPrefs = window.localStorage.getItem("user-prefs");
+      if (userPrefs) {
+        const data = JSON.parse(userPrefs);
+        checkboxes.push({
+          name: obj.field,
+          key: obj.field,
+          label: obj.headerName,
+          initialState: data[obj.field],
+        });
+      } else {
+        checkboxes.push({
+          name: obj.field,
+          key: obj.field,
+          label: obj.headerName,
+          initialState: true,
+        });
+      }
     }
     return checkboxes;
   };

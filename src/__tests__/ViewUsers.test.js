@@ -38,5 +38,7 @@ describe("View Users Route test Suite", () => {
 
     const ricky = getByText("ricky");
     expect(ricky).toBeInTheDocument();
+    const email = getByText(/ricky.karthik@gmail.com/i);
+    expect(email).toBeInTheDocument();
   });
 });
