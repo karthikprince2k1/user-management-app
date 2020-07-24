@@ -23,12 +23,12 @@ export default function (props) {
       dispatch(updateUsers(users.data));
     });
   }, []);
-  const handleSearch = (data) => {
+  const handleSearch = async (data) => {
     let filteredList = [...fetchedUsers];
     if (data.contact !== "") {
-      getUserByContact(data.contactType, data.contact).then((res) => {
-        dispatch(updateUsers(res.data));
-      });
+      const response = await getUserByContact(data.contactType, data.contact);
+      console.log(response);
+      filteredList = response.data;
     }
 
     if (data.firstName !== "") {
