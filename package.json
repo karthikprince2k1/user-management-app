@@ -38,7 +38,7 @@
     ]
   },
   "devDependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "jest-environment-jsdom-fourteen": "^1.0.1",
     "jsdom": "^16.3.0",
     "mutationobserver-shim": "^0.3.7",
